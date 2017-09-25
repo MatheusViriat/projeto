@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Imagens Semelhantes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card *ngFor="let item of items | async">
+    {{teste(item)}}
+    <img [src]="'data:image/png;base64,' + item.imageData"/>
+    <ion-card-content>
+      <ion-list no-lines>
+        <ion-grid *ngIf="item.results[0].webDetection.partialMatchingImages != undefined">
+          <p> Imagens de correspondência parcial </p>
+          <ion-row>
+            <ion-col col-6 *ngFor="let number of [0,1,2,3]">
+              <img width="100" height="130" src="{{ item.results[0].webDetection.partialMatchingImages[number].url}}">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="item.results[0].webDetection.visuallySimilarImages != undefined">
+          <p>Imagens visualmente semelhantes</p>
+          <ion-row>
+            <ion-col col-6 *ngFor="let number of [0,1,2,3]">
+              <img width="100" height="130" src="{{ item.results[0].webDetection.visuallySimilarImages[number].url}}">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid *ngIf="item.results[0].webDetection.fullMatchingImages != undefined">
+          <p>Imagens totalmente semelhantes</p>
+          <ion-row>
+            <ion-col col-6 *ngFor="let number of [0,1,2,3]">
+              <img width="100" height="130" src="{{ item.results[0].webDetection.fullMatchingImages[number].url}}">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <p *ngIf="item.results[0].webDetection.webEntities != undefined"></p>
+        <p *ngFor="let i of [0,1,2]">
+          {{item.results[0].webDetection.webEntities[i].description}}
+          {{item.results[0].webDetection.webEntities[i].score}}
+        </p>
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-fab bottom right>
+    <button ion-fab (click)="takePhoto()">
+      <ion-icon name="camera"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>
